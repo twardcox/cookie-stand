@@ -8,12 +8,18 @@ color pallett: prim  #d46a6a  462e74
 * {
   box-sizing: border-box;
   font-family: Georgia, 'Times New Roman', Times, serif;
-  color: #462e74;
+  color: #8b7f97;
+  display: ;
 }
 
-body {
-  background-color: #aa9b39;
+body,
+html {
+  background-color: rgb(230, 207, 207);
   margin: auto;
+}
+
+header {
+  background-color: rgb(59, 153, 153);
 }
 
 ul li {
@@ -25,11 +31,32 @@ ul li {
 h1,
 h2 {
   font-family: 'Roboto', sans-serif;
-  color: #622870;
+  color: #c098ca;
 }
 
 img {
   width: 95%;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+th,
+td {
+  text-align: left;
+  padding: 8px;
+}
+
+table,
+th,
+td {
+  border: 1px solid black;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
 }
 
 nav {
@@ -43,6 +70,7 @@ nav li {
 }
 
 #logo {
+  font-family: fantasy;
   font-size: 3em;
   text-align: center;
 }
