@@ -7,6 +7,7 @@ function CookieStore(name, maxCustPerHour, minCustPerHour, avgCookiePerCust) {
   this.minCustPerHour = minCustPerHour;
   this.avgCookiePerCust = avgCookiePerCust;
   this.cookieSalesPerHour = [];
+  this.cookieServersPerHour = [];
   this.open = 6;
   this.close = 20;
 }
@@ -23,6 +24,16 @@ CookieStore.prototype.populateCookieSales = function() {
   }
 };
 
+CookieStore.prototype.populateServers = function() {
+  for (var s = 0; s < this.cookieSalesPerHour.length; s++) {
+    if (this.cookieSalesPerHour[s] < 40) {
+      this.cookieServersPerHour.push(2);
+    } else {
+      this.cookieServersPerHour.push(Math.ceil(this.cookieSalesPerHour[s] / 20));
+    }
+  }
+};
+
 // Individual store data
 var cookieStores = [['First and Pike', 65, 23, 6.3], ['SeaTac Airport', 24, 3, 1, 2], ['Seattle Center', 38, 11, 3.7], ['Capitol Hill', 38, 20, 2.3], ['Alki', 16, 2, 4, 6]];
 
@@ -32,120 +43,134 @@ var makeStores = function(arr) {
   for (var l = 0; l < arr.length; l++) {
     sites.push(new CookieStore(...arr[l]));
     sites[l].populateCookieSales();
+    sites[l].populateServers();
   }
   return sites;
 };
 
 var storeList = makeStores(cookieStores);
 
-// create table for store data
-// get element to append to
-var storeContainer = document.getElementById('store-sales');
+// id = 'store-sales'
+// caption = 'Salmon Cookie Store Summary'
+// arr = cookieSalesPerHour
+// item = Cookies
+var appendTable = function(caption, arr, item) {
+  // create table for store data
+  // get element to append to
+  var storeContainer = document.getElementById('store-sales');
 
-// create table
-var tableEl = document.createElement('table');
-storeContainer.append(tableEl);
+  // create table
+  var tableEl = document.createElement('table');
+  storeContainer.append(tableEl);
 
-// create store label
-var captionEl = document.createElement('caption');
-captionEl.textContent = 'Salmon Cookie Store Summary';
-tableEl.append(captionEl);
+  // create store label
+  var captionEl = document.createElement('caption');
+  captionEl.textContent = caption;
+  tableEl.append(captionEl);
 
-// create table header
-var headerEl = document.createElement('thead');
-tableEl.append(headerEl);
+  // create table header
+  var headerEl = document.createElement('thead');
+  tableEl.append(headerEl);
 
-// create talbe row
-var rowEl = document.createElement('tr');
-headerEl.append(rowEl);
+  // create talbe row
+  var rowEl = document.createElement('tr');
+  headerEl.append(rowEl);
 
-// create line item and content
-var thEl = document.createElement('th');
-thEl.textContent = 'Store Location';
-rowEl.append(thEl);
-
-// create table header
-for (var k = 0; k < storeList[0].cookieSalesPerHour.length; k++) {
-  // set hour label
-  var hour = 0;
-  if ((storeList[0].open + k) % 12 !== 0) {
-    hour = (storeList[0].open + k) % 12;
-  } else {
-    hour = 12;
-  }
-
-  // set meridian
-  var meridian = '';
-  if (k < 6) {
-    meridian = 'am';
-  } else {
-    meridian = 'pm';
-  }
-
-  // create line item header
-  thEl = document.createElement('th');
-  thEl.textContent = `${hour}${meridian}`;
+  // create line item and content
+  var thEl = document.createElement('th');
+  thEl.textContent = 'Store Location';
   rowEl.append(thEl);
-}
-// create total header
-thEl = document.createElement('th');
-thEl.textContent = 'Total Cookies Per Store';
-rowEl.append(thEl);
 
-// create table data
-var tbodyEl = document.createElement('tbody');
-tableEl.append(tbodyEl);
+  // create table header
+  for (var k = 0; k < storeList[0][arr].length; k++) {
+    // set hour label
+    var hour = 0;
+    if ((storeList[0].open + k) % 12 !== 0) {
+      hour = (storeList[0].open + k) % 12;
+    } else {
+      hour = 12;
+    }
 
-// table data append to tbody
-// foe each item in storelist create a row and populate it with data
-for (var o = 0; o < storeList.length; o++) {
-  // set total
-  var totalCount = 0;
+    // set meridian
+    var meridian = '';
+    if (k < 6) {
+      meridian = 'am';
+    } else {
+      meridian = 'pm';
+    }
+
+    // create line item header
+    thEl = document.createElement('th');
+    thEl.textContent = `${hour}${meridian}`;
+    rowEl.append(thEl);
+  }
+  // create total header
+  thEl = document.createElement('th');
+  thEl.textContent = `Total ${item} Per Store`;
+  rowEl.append(thEl);
+
+  // create table data
+  var tbodyEl = document.createElement('tbody');
+  tableEl.append(tbodyEl);
+
+  // table data append to tbody
+  // foe each item in storelist create a row and populate it with data
+  for (var o = 0; o < storeList.length; o++) {
+    // set total
+    var totalCount = 0;
+
+    rowEl = document.createElement('tr');
+    tbodyEl.append(rowEl);
+
+    var tdEl = document.createElement('td');
+    tdEl.textContent = storeList[o].name;
+    rowEl.append(tdEl);
+
+    for (var p = 0; p < storeList[o][arr].length; p++) {
+      tdEl = document.createElement('td');
+      totalCount += storeList[o][arr][p];
+      tdEl.textContent = storeList[o][arr][p];
+      rowEl.append(tdEl);
+    }
+
+    // add total to end of row
+    tdEl = document.createElement('td');
+    tdEl.textContent = totalCount;
+    rowEl.append(tdEl);
+  }
 
   rowEl = document.createElement('tr');
   tbodyEl.append(rowEl);
 
-  var tdEl = document.createElement('td');
-  tdEl.textContent = storeList[o].name;
-  rowEl.append(tdEl);
-
-  for (var p = 0; p < storeList[o].cookieSalesPerHour.length; p++) {
-    tdEl = document.createElement('td');
-    totalCount += storeList[o].cookieSalesPerHour[p];
-    tdEl.textContent = storeList[o].cookieSalesPerHour[p];
-    rowEl.append(tdEl);
-  }
-
-  // add total to end of row
-  tdEl = document.createElement('td');
-  tdEl.textContent = totalCount;
-  rowEl.append(tdEl);
-}
-
-rowEl = document.createElement('tr');
-tbodyEl.append(rowEl);
-
-// create footer title
-thEl = document.createElement('td');
-thEl.textContent = 'Hourly Totals';
-rowEl.append(thEl);
-
-// create and populate footer with totals by hour
-var dailyTotal = 0;
-for (var q = 0; q < storeList[0].cookieSalesPerHour.length; q++) {
-  var hourlyTotal = 0;
-  for (var r = 0; r < storeList.length; r++) {
-    hourlyTotal += storeList[r].cookieSalesPerHour[q];
-  }
-
-  // append data to table
+  // create footer title
   thEl = document.createElement('td');
-  thEl.textContent = hourlyTotal;
+  thEl.textContent = 'Hourly Totals';
   rowEl.append(thEl);
-  dailyTotal += hourlyTotal;
-}
 
-// create daily total
-thEl = document.createElement('td');
-thEl.textContent = dailyTotal;
-rowEl.append(thEl);
+  // create and populate footer with totals by hour
+  var dailyTotal = 0;
+  for (var q = 0; q < storeList[0][arr].length; q++) {
+    var hourlyTotal = 0;
+    for (var r = 0; r < storeList.length; r++) {
+      hourlyTotal += storeList[r][arr][q];
+    }
+
+    // append data to table
+    thEl = document.createElement('td');
+    thEl.textContent = hourlyTotal;
+    rowEl.append(thEl);
+    dailyTotal += hourlyTotal;
+  }
+
+  // create daily total
+  thEl = document.createElement('td');
+  thEl.textContent = dailyTotal;
+  rowEl.append(thEl);
+};
+
+// id = 'store-sales'
+// caption = 'Salmon Cookie Store Summary'
+// arr = cookieSalesPerHour
+// item = Cookies
+appendTable('Salmon Cookie Store Summary', 'cookieSalesPerHour', 'Cookies');
+appendTable(' Store Server Requirement Summary', 'cookieServersPerHour', 'Servers');
