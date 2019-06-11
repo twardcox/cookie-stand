@@ -6,21 +6,47 @@ color pallett: prim  #d46a6a  462e74
 */
 
 * {
+  box-sizing: border-box;
   font-family: Georgia, 'Times New Roman', Times, serif;
   color: #462e74;
 }
 
 body {
   background-color: #aa9b39;
+  margin: auto;
 }
 
 ul li {
   font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
   color: #622870;
+  list-style: none;
 }
 
 h1,
 h2 {
   font-family: 'Roboto', sans-serif;
   color: #622870;
+}
+
+img {
+  width: 95%;
+}
+
+nav {
+  padding-top: 30px;
+}
+
+nav li {
+  margin-right: 20px;
+  font-size: 1.1em;
+  display: inline;
+}
+
+#logo {
+  font-size: 3em;
+  text-align: center;
+}
+
+#page-top {
+  text-align: center;
 }
