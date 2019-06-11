@@ -9,7 +9,6 @@ var FirstAndPike = {
   populateCookieSales: function() {
     for (var i = this.open; i <= this.close; i++) {
       this.cookieSalesPerHour.push(Math.floor(this.randomCustomerGenerator() * this.avgCookiePerCust));
-      // console.log('this.cookieSalesPerHour: ', this.cookieSalesPerHour);
     }
   },
   randomCustomerGenerator: function() {
@@ -28,7 +27,6 @@ var SeaTacAirport = {
   populateCookieSales: function() {
     for (var i = this.open; i <= this.close; i++) {
       this.cookieSalesPerHour.push(Math.floor(this.randomCustomerGenerator() * this.avgCookiePerCust));
-      // console.log('this.cookieSalesPerHour: ', this.cookieSalesPerHour);
     }
   },
   randomCustomerGenerator: function() {
@@ -47,7 +45,6 @@ var SeattleCenter = {
   populateCookieSales: function() {
     for (var i = this.open; i <= this.close; i++) {
       this.cookieSalesPerHour.push(Math.floor(this.randomCustomerGenerator() * this.avgCookiePerCust));
-      // console.log('this.cookieSalesPerHour: ', this.cookieSalesPerHour);
     }
   },
   randomCustomerGenerator: function() {
@@ -66,7 +63,6 @@ var CapitolHill = {
   populateCookieSales: function() {
     for (var i = this.open; i <= this.close; i++) {
       this.cookieSalesPerHour.push(Math.floor(this.randomCustomerGenerator() * this.avgCookiePerCust));
-      // console.log('this.cookieSalesPerHour: ', this.cookieSalesPerHour);
     }
   },
   randomCustomerGenerator: function() {
@@ -86,7 +82,6 @@ var Alki = {
   populateCookieSales: function() {
     for (var i = this.open; i <= this.close; i++) {
       this.cookieSalesPerHour.push(Math.floor(this.randomCustomerGenerator() * this.avgCookiePerCust));
-      // console.log('this.cookieSalesPerHour: ', this.cookieSalesPerHour);
     }
   },
 
@@ -99,8 +94,10 @@ var Alki = {
 
 var storeList = [FirstAndPike, SeaTacAirport, SeattleCenter, CapitolHill, Alki];
 
-// for each store in store list create unordered list
+// for each store in store list create unordered list and sum its totals
+
 for (var j = 0; j < storeList.length; j++) {
+  var storeTotal = 0;
   // set store name for object calling
   var store = storeList[j];
 
@@ -121,7 +118,6 @@ for (var j = 0; j < storeList.length; j++) {
 
   // populate cookie sales
   store.populateCookieSales();
-  // console.log(store.cookieSalesPerHour);
 
   // create Line items
   for (var k = 0; k < store.cookieSalesPerHour.length; k++) {
@@ -132,7 +128,6 @@ for (var j = 0; j < storeList.length; j++) {
     } else {
       hour = 12;
     }
-    // console.log('hour: ', hour);
 
     // set meridian
     var meridian = '';
@@ -145,7 +140,10 @@ for (var j = 0; j < storeList.length; j++) {
     // create line item and content
     var liEl = document.createElement('li');
     liEl.textContent = `${hour}${meridian}: ${store.cookieSalesPerHour[k]} cookies`;
-
+    storeTotal += store.cookieSalesPerHour[k];
     ulEl.append(liEl);
   }
+  var sumLiEl = document.createElement('li');
+  sumLiEl.textContent = storeTotal + ' : Total Cookies Per Day';
+  ulEl.append(sumLiEl);
 }
