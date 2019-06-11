@@ -1,0 +1,26 @@
+/* 
+color pallett: prim  #d46a6a  462e74
+               sec 1 #d49a6a  622870
+               sec 2 #407f7f  9ca738
+               sec 3 #55aa55  aa9b39
+*/
+
+* {
+  font-family: Georgia, 'Times New Roman', Times, serif;
+  color: #462e74;
+}
+
+body {
+  background-color: #aa9b39;
+}
+
+ul li {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  color: #622870;
+}
+
+h1,
+h2 {
+  font-family: 'Roboto', sans-serif;
+  color: #622870;
+}
