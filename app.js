@@ -137,6 +137,8 @@ for (var q = 0; q < storeList[0].cookieSalesPerHour.length; q++) {
   for (var r = 0; r < storeList.length; r++) {
     hourlyTotal += storeList[r].cookieSalesPerHour[q];
   }
+
+  // append data to table
   thEl = document.createElement('td');
   thEl.textContent = hourlyTotal;
   rowEl.append(thEl);
