@@ -1,4 +1,4 @@
-'use strict';
+"use strict";
 
 // Cookie store object constructor
 function CookieStore(name, maxCustPerHour, minCustPerHour, avgCookiePerCust) {
@@ -10,17 +10,24 @@ function CookieStore(name, maxCustPerHour, minCustPerHour, avgCookiePerCust) {
   this.cookieServersPerHour = [];
   this.open = 6;
   this.close = 20;
+  CookieStore.allStores.push(this);
 }
 
+CookieStore.allStores = [];
 // add random customer generator method to CookieStore
 CookieStore.prototype.randomCustomerGenerator = function() {
-  return Math.floor(Math.random() * (this.maxCustPerHour - this.minCustPerHour) + this.minCustPerHour);
+  return Math.floor(
+    Math.random() * (this.maxCustPerHour - this.minCustPerHour) +
+      this.minCustPerHour
+  );
 };
 
 // add populate cookie sales method to CookieStore
 CookieStore.prototype.populateCookieSales = function() {
   for (var i = this.open; i <= this.close; i++) {
-    this.cookieSalesPerHour.push(Math.floor(this.randomCustomerGenerator() * this.avgCookiePerCust));
+    this.cookieSalesPerHour.push(
+      Math.floor(this.randomCustomerGenerator() * this.avgCookiePerCust)
+    );
   }
 };
 
@@ -29,13 +36,21 @@ CookieStore.prototype.populateServers = function() {
     if (this.cookieSalesPerHour[s] < 40) {
       this.cookieServersPerHour.push(2);
     } else {
-      this.cookieServersPerHour.push(Math.ceil(this.cookieSalesPerHour[s] / 20));
+      this.cookieServersPerHour.push(
+        Math.ceil(this.cookieSalesPerHour[s] / 20)
+      );
     }
   }
 };
 
 // Individual store data
-var cookieStores = [['First and Pike', 65, 23, 6.3], ['SeaTac Airport', 24, 3, 1, 2], ['Seattle Center', 38, 11, 3.7], ['Capitol Hill', 38, 20, 2.3], ['Alki', 16, 2, 4, 6]];
+var cookieStores = [
+  ["First and Pike", 65, 23, 6.3],
+  ["SeaTac Airport", 24, 3, 1, 2],
+  ["Seattle Center", 38, 11, 3.7],
+  ["Capitol Hill", 38, 20, 2.3],
+  ["Alki", 16, 2, 4, 6]
+];
 
 // make and store cookie stores
 var makeStores = function(arr) {
@@ -57,28 +72,28 @@ var storeList = makeStores(cookieStores);
 var appendTable = function(caption, arr, item) {
   // create table for store data
   // get element to append to
-  var storeContainer = document.getElementById('store-sales');
+  var storeContainer = document.getElementById("store-sales");
 
   // create table
-  var tableEl = document.createElement('table');
+  var tableEl = document.createElement("table");
   storeContainer.append(tableEl);
 
   // create store label
-  var captionEl = document.createElement('caption');
+  var captionEl = document.createElement("caption");
   captionEl.textContent = caption;
   tableEl.append(captionEl);
 
   // create table header
-  var headerEl = document.createElement('thead');
+  var headerEl = document.createElement("thead");
   tableEl.append(headerEl);
 
   // create talbe row
-  var rowEl = document.createElement('tr');
+  var rowEl = document.createElement("tr");
   headerEl.append(rowEl);
 
   // create line item and content
-  var thEl = document.createElement('th');
-  thEl.textContent = 'Store Location';
+  var thEl = document.createElement("th");
+  thEl.textContent = "Store Location";
   rowEl.append(thEl);
 
   // create table header
@@ -92,25 +107,25 @@ var appendTable = function(caption, arr, item) {
     }
 
     // set meridian
-    var meridian = '';
+    var meridian = "";
     if (k < 6) {
-      meridian = 'am';
+      meridian = "am";
     } else {
-      meridian = 'pm';
+      meridian = "pm";
     }
 
     // create line item header
-    thEl = document.createElement('th');
+    thEl = document.createElement("th");
     thEl.textContent = `${hour}${meridian}`;
     rowEl.append(thEl);
   }
   // create total header
-  thEl = document.createElement('th');
+  thEl = document.createElement("th");
   thEl.textContent = `Total ${item} Per Store`;
   rowEl.append(thEl);
 
   // create table data
-  var tbodyEl = document.createElement('tbody');
+  var tbodyEl = document.createElement("tbody");
   tableEl.append(tbodyEl);
 
   // table data append to tbody
@@ -119,32 +134,32 @@ var appendTable = function(caption, arr, item) {
     // set total
     var totalCount = 0;
 
-    rowEl = document.createElement('tr');
+    rowEl = document.createElement("tr");
     tbodyEl.append(rowEl);
 
-    var tdEl = document.createElement('td');
+    var tdEl = document.createElement("td");
     tdEl.textContent = storeList[o].name;
     rowEl.append(tdEl);
 
     for (var p = 0; p < storeList[o][arr].length; p++) {
-      tdEl = document.createElement('td');
+      tdEl = document.createElement("td");
       totalCount += storeList[o][arr][p];
       tdEl.textContent = storeList[o][arr][p];
       rowEl.append(tdEl);
     }
 
     // add total to end of row
-    tdEl = document.createElement('td');
+    tdEl = document.createElement("td");
     tdEl.textContent = totalCount;
     rowEl.append(tdEl);
   }
 
-  rowEl = document.createElement('tr');
+  rowEl = document.createElement("tr");
   tbodyEl.append(rowEl);
 
   // create footer title
-  thEl = document.createElement('td');
-  thEl.textContent = 'Hourly Totals';
+  thEl = document.createElement("td");
+  thEl.textContent = "Hourly Totals";
   rowEl.append(thEl);
 
   // create and populate footer with totals by hour
@@ -156,21 +171,49 @@ var appendTable = function(caption, arr, item) {
     }
 
     // append data to table
-    thEl = document.createElement('td');
+    thEl = document.createElement("td");
     thEl.textContent = hourlyTotal;
     rowEl.append(thEl);
     dailyTotal += hourlyTotal;
   }
 
   // create daily total
-  thEl = document.createElement('td');
+  thEl = document.createElement("td");
   thEl.textContent = dailyTotal;
   rowEl.append(thEl);
 };
+
+//Get new store form
+var form = document.getElementById("newShopForm");
+
+var handleFormSubmit = function(formSubmitEvent) {
+  formSubmitEvent.preventDefault();
+  var storeName = formSubmitEvent.target["name"].value;
+  var minCustomers = formSubmitEvent.target["mincustomersperhour"].value;
+  var maxCustomers = formSubmitEvent.target["maxcustomersperhour"].value;
+  var avgCookiesPerCustomer =
+    formSubmitEvent.target["averagecookiespercustomer"].value;
+
+  new CookieStore(storeName, maxCustomers, minCustomers, avgCookiesPerCustomer);
+  cookieStores.push([
+    storeName,
+    maxCustomers,
+    minCustomers,
+    avgCookiesPerCustomer
+  ]);
+  console.log("cookie store : " + CookieStore.allStores);
+};
+
+form.addEventListener("submit", handleFormSubmit);
 
 // id = 'store-sales'
 // caption = 'Salmon Cookie Store Summary'
 // arr = cookieSalesPerHour
 // item = Cookies
-appendTable('Salmon Cookie Store Summary', 'cookieSalesPerHour', 'Cookies');
-appendTable(' Store Server Requirement Summary', 'cookieServersPerHour', 'Servers');
+makeStores(cookieStores);
+appendTable("Salmon Cookie Store Summary", "cookieSalesPerHour", "Cookies");
+appendTable(
+  " Store Server Requirement Summary",
+  "cookieServersPerHour",
+  "Servers"
+);
