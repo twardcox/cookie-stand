@@ -1,80 +1,58 @@
-/* 
-color pallett: prim  #d46a6a  462e74
-               sec 1 #d49a6a  622870
-               sec 2 #407f7f  9ca738
-               sec 3 #55aa55  aa9b39
-*/
-
 * {
   box-sizing: border-box;
   font-family: Georgia, 'Times New Roman', Times, serif;
-  color: #8b7f97;
-  display: ;
 }
 
-body,
-html {
-  background-color: rgb(230, 207, 207);
+body {
   margin: auto;
 }
 
-header {
-  background-color: rgb(59, 153, 153);
+h1 {
+  text-align: center;
 }
 
-ul li {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  color: #622870;
+header > img {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 75%;
+}
+
+header > nav > ul > li {
   list-style: none;
-}
-
-h1,
-h2 {
-  font-family: 'Roboto', sans-serif;
-  color: #c098ca;
-}
-
-img {
-  width: 95%;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-}
-
-th,
-td {
-  text-align: left;
-  padding: 8px;
-}
-
-table,
-th,
-td {
-  border: 1px solid black;
-}
-
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
-
-nav {
-  padding-top: 30px;
-}
-
-nav li {
-  margin-right: 20px;
-  font-size: 1.1em;
   display: inline;
+  margin: 5px;
+  font-size: 1.2em;
 }
 
-#logo {
+header > nav > ul > li > a {
+  text-decoration: none;
+  color: black;
+}
+
+main > aside > ul > li {
+  list-style: none;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+main > aside > ul > li:before {
+  content: '';
+  display: inline-block;
+  height: 50px;
+  width: 50px;
+  background-image: url(./img/frosted-cookie.jpg);
+}
+
+main > aside > ul > ul > li {
+  list-style: none;
   font-family: fantasy;
-  font-size: 3em;
-  text-align: center;
 }
 
-#page-top {
-  text-align: center;
+main > article > section {
+  width: 75%;
+  float: right;
+  padding-left: 30px;
+}
+
+footer {
+  clear: both;
 }
