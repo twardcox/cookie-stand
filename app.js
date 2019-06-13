@@ -27,6 +27,7 @@ CookieStore.prototype.populateCookieSales = function() {
   }
 };
 
+// add populate servers metho to CookieStore
 CookieStore.prototype.populateServers = function() {
   for (var s = 0; s < this.cookieSalesPerHour.length; s++) {
     if (this.cookieSalesPerHour[s] < 40) {
@@ -53,33 +54,41 @@ var makeStores = function(arr) {
 
 var storeList = makeStores(cookieStores);
 
+var createEl = function(parentNode, childNode, content, childId) {
+  var newEl = document.createElement(childNode);
+
+  if (content) {
+    newEl.textContent = content;
+  }
+  if (childId) {
+    newEl.id = childId;
+  }
+
+  parentNode.append(newEl);
+
+  return newEl;
+};
+
 var appendTable = function(caption, arr, item) {
   // create table for store data
   // get element to append to
   var storeContainer = document.getElementById('store-sales');
 
   // create table
-  var tableEl = document.createElement('table');
-  tableEl.id = 'table-set';
-  storeContainer.append(tableEl);
+  var tableEl = createEl(storeContainer, 'table', '', 'table-set');
 
   // create store label
-  var captionEl = document.createElement('caption');
-  captionEl.textContent = caption;
-  tableEl.append(captionEl);
+  createEl(tableEl, 'caption', caption);
 
   // create table header
-  var headerEl = document.createElement('thead');
-  tableEl.append(headerEl);
+  var headerEl = createEl(tableEl, 'thead');
 
   // create talbe row
-  var rowEl = document.createElement('tr');
-  headerEl.append(rowEl);
+  var rowEl = createEl(headerEl, 'tr');
 
   // create line item and content
-  var thEl = document.createElement('th');
-  thEl.textContent = 'Store Location';
-  rowEl.append(thEl);
+  // eslint-disable-next-line no-unused-vars
+  var thEl = createEl(rowEl, 'th', 'Store Location');
 
   // create table header
   for (var k = 0; k < storeList[0][arr].length; k++) {
@@ -100,18 +109,13 @@ var appendTable = function(caption, arr, item) {
     }
 
     // create line item header
-    thEl = document.createElement('th');
-    thEl.textContent = `${hour}${meridian}`;
-    rowEl.append(thEl);
+    thEl = createEl(rowEl, 'th', `${hour}${meridian}`);
   }
   // create total header
-  thEl = document.createElement('th');
-  thEl.textContent = `Total ${item} Per Store`;
-  rowEl.append(thEl);
+  thEl = createEl(rowEl, 'th', `Total ${item} Per Store`);
 
   // create table body
-  var tbodyEl = document.createElement('tbody');
-  tableEl.append(tbodyEl);
+  var tbodyEl = createEl(tableEl, 'tbody');
 
   // table data append to tbody
   // foe each item in storelist create a row and populate it with data
@@ -119,33 +123,23 @@ var appendTable = function(caption, arr, item) {
     // set total
     var totalCount = 0;
 
-    rowEl = document.createElement('tr');
-    tbodyEl.append(rowEl);
+    rowEl = createEl(tbodyEl, 'tr');
 
-    var tdEl = document.createElement('td');
-    tdEl.textContent = storeList[o].name;
-    rowEl.append(tdEl);
+    var tdEl = createEl(rowEl, 'td', storeList[o].name);
 
     for (var p = 0; p < storeList[o][arr].length; p++) {
-      tdEl = document.createElement('td');
+      tdEl = createEl(rowEl, 'td', storeList[o][arr][p]);
       totalCount += storeList[o][arr][p];
-      tdEl.textContent = storeList[o][arr][p];
-      rowEl.append(tdEl);
     }
 
     // add total to end of row
-    tdEl = document.createElement('td');
-    tdEl.textContent = totalCount;
-    rowEl.append(tdEl);
+    tdEl = createEl(rowEl, 'td', totalCount);
   }
 
-  rowEl = document.createElement('tr');
-  tbodyEl.append(rowEl);
+  rowEl = createEl(tbodyEl, 'tr');
 
   // create footer title
-  thEl = document.createElement('td');
-  thEl.textContent = 'Hourly Totals';
-  rowEl.append(thEl);
+  thEl = createEl(rowEl, 'td', 'Hourly Totals');
 
   // create and populate footer with totals by hour
   var dailyTotal = 0;
@@ -156,16 +150,12 @@ var appendTable = function(caption, arr, item) {
     }
 
     // append data to table
-    thEl = document.createElement('td');
-    thEl.textContent = hourlyTotal;
-    rowEl.append(thEl);
+    thEl = createEl(rowEl, 'td', hourlyTotal);
     dailyTotal += hourlyTotal;
   }
 
   // create daily total
-  thEl = document.createElement('td');
-  thEl.textContent = dailyTotal;
-  rowEl.append(thEl);
+  thEl = createEl(rowEl, 'td', dailyTotal);
 };
 
 appendTable('Salmon Cookie Store Summary', 'cookieSalesPerHour', 'Cookies');

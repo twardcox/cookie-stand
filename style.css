@@ -15,7 +15,10 @@ header > img {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 75%;
+  width: 100%;
+  background-image: url(./img/cutter.jpeg);
+  background-repeat: repeat;
+  background-size: 75px;
 }
 
 header > nav > ul > li {
@@ -37,9 +40,9 @@ main > aside > ul > li {
 main > aside > ul > li:before {
   content: '';
   display: inline-block;
-  height: 50px;
-  width: 50px;
-  background-image: url(./img/frosted-cookie.jpg);
+  height: 30px;
+  width: 30px;
+  background-image: url(./img/frosted-cookie-list.jpg);
 }
 
 main > aside > ul > ul > li {
