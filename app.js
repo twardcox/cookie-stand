@@ -14,6 +14,7 @@ function CookieStore(name, maxCustPerHour, minCustPerHour, avgCookiePerCust) {
 }
 
 CookieStore.allStores = [];
+
 // add random customer generator method to CookieStore
 CookieStore.prototype.randomCustomerGenerator = function() {
   return Math.floor(
@@ -46,10 +47,10 @@ CookieStore.prototype.populateServers = function() {
 // Individual store data
 var cookieStores = [
   ["First and Pike", 65, 23, 6.3],
-  ["SeaTac Airport", 24, 3, 1, 2],
+  ["SeaTac Airport", 24, 3, 1.2],
   ["Seattle Center", 38, 11, 3.7],
   ["Capitol Hill", 38, 20, 2.3],
-  ["Alki", 16, 2, 4, 6]
+  ["Alki", 16, 2, 4.6]
 ];
 
 // make and store cookie stores
@@ -65,10 +66,6 @@ var makeStores = function(arr) {
 
 var storeList = makeStores(cookieStores);
 
-// id = 'store-sales'
-// caption = 'Salmon Cookie Store Summary'
-// arr = cookieSalesPerHour
-// item = Cookies
 var appendTable = function(caption, arr, item) {
   // create table for store data
   // get element to append to
@@ -76,6 +73,7 @@ var appendTable = function(caption, arr, item) {
 
   // create table
   var tableEl = document.createElement("table");
+  tableEl.id = "table-set";
   storeContainer.append(tableEl);
 
   // create store label
@@ -124,7 +122,7 @@ var appendTable = function(caption, arr, item) {
   thEl.textContent = `Total ${item} Per Store`;
   rowEl.append(thEl);
 
-  // create table data
+  // create table body
   var tbodyEl = document.createElement("tbody");
   tableEl.append(tbodyEl);
 
@@ -183,37 +181,39 @@ var appendTable = function(caption, arr, item) {
   rowEl.append(thEl);
 };
 
-//Get new store form
-var form = document.getElementById("newShopForm");
-
-var handleFormSubmit = function(formSubmitEvent) {
-  formSubmitEvent.preventDefault();
-  var storeName = formSubmitEvent.target["name"].value;
-  var minCustomers = formSubmitEvent.target["mincustomersperhour"].value;
-  var maxCustomers = formSubmitEvent.target["maxcustomersperhour"].value;
-  var avgCookiesPerCustomer =
-    formSubmitEvent.target["averagecookiespercustomer"].value;
-
-  new CookieStore(storeName, maxCustomers, minCustomers, avgCookiesPerCustomer);
-  cookieStores.push([
-    storeName,
-    maxCustomers,
-    minCustomers,
-    avgCookiesPerCustomer
-  ]);
-  console.log("cookie store : " + CookieStore.allStores);
-};
-
-form.addEventListener("submit", handleFormSubmit);
-
-// id = 'store-sales'
-// caption = 'Salmon Cookie Store Summary'
-// arr = cookieSalesPerHour
-// item = Cookies
-makeStores(cookieStores);
 appendTable("Salmon Cookie Store Summary", "cookieSalesPerHour", "Cookies");
 appendTable(
   " Store Server Requirement Summary",
   "cookieServersPerHour",
   "Servers"
 );
+
+var form = document.getElementById("newShopForm");
+
+var handleFormSubmit = function(formSubmitEvent) {
+  formSubmitEvent.preventDefault();
+
+  var storeName = formSubmitEvent.target.name.value;
+
+  var maxCust = parseInt(formSubmitEvent.target.maxCustPerHour.value);
+
+  var minCust = parseInt(formSubmitEvent.target.minCustPerHour.value);
+
+  var avgCookie = parseInt(formSubmitEvent.target.avgCookiePerCust.value);
+  var newStore = [storeName, maxCust, minCust, avgCookie];
+  cookieStores.push(newStore);
+
+  storeList = makeStores(cookieStores);
+
+  document.getElementById("table-set").remove();
+  document.getElementById("table-set").remove();
+
+  appendTable("Salmon Cookie Store Summary", "cookieSalesPerHour", "Cookies");
+  appendTable(
+    " Store Server Requirement Summary",
+    "cookieServersPerHour",
+    "Servers"
+  );
+};
+
+form.addEventListener("submit", handleFormSubmit);
